@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+<body>
+
+  <% include partials/_header %>
+  <h2> URL List </h2>
+
+  <ul>
+    <% for (let url in urls) { %>
+      <li><%= shortID %> - <%= urls[shortID] %></li>
+    <% }; %>
+  </ul>
+
+  <a href = '#' > Empty for now </a>
+
+</body>
+</html>
