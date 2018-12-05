@@ -61,3 +61,9 @@ app.get('/u/:shortURL', (req, res) => {
   res.redirect(longURL);
 });
 
+//deletes URL
+app.post('/urls/:id/delete', (req, res) => {
+  delete urlDatabase[req.params.id];
+  res.redirect('/urls');
+});
+
