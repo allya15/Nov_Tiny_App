@@ -11,10 +11,11 @@ app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
 
-var urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
-};
+const urlDatabase = { shortID: { creator: "", longURL: "" } };
+// var urlDatabase = {
+//   "b2xVn2": "http://www.lighthouselabs.ca",
+//   "9sm5xK": "http://www.google.com"
+// };
 
 //helper functions
 //generates random string
@@ -30,11 +31,6 @@ app.get("/", (req, res) => {
 //
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
-});
-
-//example page - can delete before submitting
-app.get("/hello", (req, res) => {
-  res.send("<html><body>Hello <b>World</b></body></html>\n");
 });
 
 //urls routes
@@ -60,6 +56,7 @@ app.get("/urls/:id", (req, res) => {
 
 //redirects to long url associated with short url
 app.get('/u/:shortURL', (req, res) => {
+  const shortURL = generateRandomString(6);
   const longURL = urlDatabase[req.params.shortURL].longURL;
   res.redirect(longURL);
 });
