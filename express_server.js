@@ -11,11 +11,12 @@ app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
 
-const urlDatabase = { shortID: { creator: "", longURL: "" } };
-// var urlDatabase = {
-//   "b2xVn2": "http://www.lighthouselabs.ca",
-//   "9sm5xK": "http://www.google.com"
-// };
+
+// const urlDatabase = { shortID: { creator: "", longURL: "" } };
+var urlDatabase = {
+  "b2xVn2": "http://www.lighthouselabs.ca",
+  "9sm5xK": "http://www.google.com"
+};
 
 //helper functions
 //generates random string
@@ -23,7 +24,7 @@ function generateRandomString(x) {
   return [...Array(x)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 }
 
-//Home page
+//Temporary Home page
 app.get("/", (req, res) => {
   res.send("Hello!");
 });

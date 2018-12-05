@@ -9,15 +9,21 @@
   <% include partials/_header %>
   <h2> URL List </h2>
 
-  <ul>
-    <% for (let url in urls) { %>
-      <li><%= shortID %> - <%= urls[shortID] %></li>
-    <% }; %>
-  </ul>
 
-  <form method="POST" action="/urls/<%=`${url}`%>/delete"><button>Delete</button></form>
+    <ul>
+       <% for (let url in urls) { %>
+      <li><p><a href="<%=`/u/${url}`%>"><%= `${url}`%></a> <%= urls[url] %><form method="POST" action="/urls/<%=`${url}`%>/delete"><button>Delete</button></form><a href="/urls/<%=[url]%>"><button>Edit</button></a></p></li>
+      </li>
+    <% }; %>
+  <ul>
+
+
 
   <a href = '#' > Empty for now </a>
 
 </body>
 </html>
+
+
+
+
