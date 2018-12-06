@@ -12,7 +12,10 @@
 
     <ul>
        <% for (let url in urls) { %>
-      <li><p><a href="<%=`/u/${url}`%>"><%= `${url}`%></a> <%= urls[url] %><form method="POST" action="/urls/<%=`${url}`%>/delete"><button>Delete</button></form><a href="/urls/<%=[url]%>"><button>Edit</button></a></p></li>
+      <li><p><a href="<%=`/u/${url}`%>"><%= `${url}`%></a> <%= urls[url] %>
+        <form method="POST" action="/urls/<%=`${url}`%>/delete"><button>Delete</button>
+        </form>
+        <a href="/urls/<%=[url]%>"><button>Edit</button></a></p></li>
       </li>
     <% }; %>
   <ul>

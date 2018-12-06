@@ -12,7 +12,7 @@ app.listen(PORT, () => {
 });
 
 
-// const urlDatabase = { shortID: { creator: "", longURL: "" } };
+// const urlDatabase = { ea29ps: { creator: "", longURL: "" } };
 var urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -23,11 +23,6 @@ var urlDatabase = {
 function generateRandomString(x) {
   return [...Array(x)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 }
-
-//Temporary Home page
-app.get("/", (req, res) => {
-  res.send("Hello!");
-});
 
 //
 app.get("/urls.json", (req, res) => {
@@ -51,7 +46,10 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
-  let templateVars = { shortURL: req.params.id };
+  const templateVars = {
+    shortURL: req.params.id,
+    urls: urlDatabase[req.params.shortURL].longURL,
+  };
   res.render("urls_show", templateVars);
 });
 
