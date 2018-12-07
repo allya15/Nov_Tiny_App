@@ -106,11 +106,54 @@ app.post("/register", (req, res) => {
 });
 
 
+//Login Routes
+app.get('/login', (req, res) => {
+  let user = users[req.body.user_id];
+  const templateVars = { user };
+  res.render('_login', templateVars);
+});
+
+app.post('/login', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+   if (email && password) {
+    var user = validateUser(email, password);
+    if (user) {
+      req.body.user_id = user.id;
+      res.redirect('/urls');
+      return;
+    } else {
+      res.status(403).send('Incorrect email or password');
+      return;
+    };
+  }
+});
 
 
+app.post('/login', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+   if (email && password) {
 
+    for (var id in users) {
+      if (users[id].email === email) {
+        if (users[id].password === password) {
+          return users[id];
+        }
+      }
+    }
 
-
+    var user = validateUser(email, password);
+    if (user) {
+      req.body.user_id = user.id;
+      res.redirect('/urls');
+      return;
+    } else {
+      res.status(403).send('Incorrect email or password');
+      return;
+    };
+  }
+});
 
 
 
