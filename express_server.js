@@ -85,24 +85,25 @@ app.post('/urls/:id/delete', (req, res) => {
 });
 
 //Register Routes
-app.get("/urls/register", (req, res) => {
-  res.render('urls_register', {username: req.cookies["username"]});
+app.get("/register", (req, res) => {
+  res.render('register', {username: req.cookies["username"]});
 });
 
-app.post("urls/register", (req, res) => {
-  const id = req.body.id;
-  const email = req.body.email;
-  const password = req.body.password;
-  users.push({email: email, password: password});
-  let randUserID = generateRandomString(6);
-  res.cookie("users", users);
-  res.redirect("/urls");
+app.post("/register", (req, res) => {
+  if (!email || !password) {
+    res.status(400);
+    res.send('user not found');
+  } else if (email === users.email) {
+    res.status(400);
+    res.send('user already exists');
+  } else {
+    let id = generateRandomString(6);
+    let newUser = { id, email, password };
+    users[id] = newUser;
+    res.cookie('id', id);
+    res.redirect('/urls');
+  }
 });
-
-
-
-
-
 
 
 
