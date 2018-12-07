@@ -16,11 +16,8 @@ app.listen(PORT, () => {
 });
 
 
-// const urlDatabase = { ea29ps: { creator: "", longURL: "" } };
-const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
-};
+const urlDatabase = { user: { creator: "", longURL: "" } };
+
 
 const users = {
   "userRandomID": {
@@ -119,53 +116,32 @@ app.post('/register', (req, res) => {
 });
 
 
-//Login Routes
+//Login
 app.get('/login', (req, res) => {
-  let user = users[req.body.user_id];
-  const templateVars = { user };
+  const templateVars = {
+    user: req.session.user_id,
+  };
   res.render('_login', templateVars);
 });
-
 app.post('/login', (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
-   if (email && password) {
-    var user = validateUser(email, password);
-    if (user) {
-      req.body.user_id = user.id;
-      res.redirect('/urls');
-      return;
-    } else {
-      res.status(403).send('Incorrect email or password');
-      return;
-    };
+  if (!req.body.email || !req.body.password) {
+    res.statusCode = 400;
+    res.send('No email or password entered');
+    return;
   }
-});
-
-
-app.post('/login', (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
-   if (email && password) {
-
-    for (var id in users) {
-      if (users[id].email === email) {
-        if (users[id].password === password) {
-          return users[id];
-        }
-      }
+  for (const userID in users) {
+    const username = users[userID].email;
+    const hashedPassword = users[userID].hashedPassword;
+    if (username === req.body.email && bcrypt.compareSync(req.body.password, hashedPassword)) {
+      req.session.user_id = users[userID];
+      res.redirect('/urls?login_success');
+      return;
     }
-
-    var user = validateUser(email, password);
-    if (user) {
-      req.body.user_id = user.id;
-      res.redirect('/urls');
-      return;
-    } else {
-      res.status(403).send('Incorrect email or password');
-      return;
-    };
   }
+
+  res.statusCode = 403;
+  res.send('Wrong username or password');
+  res.redirect('/urls');
 });
 
 //Logout Routes
