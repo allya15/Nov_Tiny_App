@@ -1,11 +1,12 @@
-var express = require("express");
-var app = express();
-var PORT = 8080; // default port 8080
+const express = require("express");
+const app = express();
+const PORT = 8080; // default port 8080
+const bcrypt = require('bcrypt');
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
-var cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
 app.set("view engine", "ejs");
@@ -16,7 +17,7 @@ app.listen(PORT, () => {
 
 
 // const urlDatabase = { ea29ps: { creator: "", longURL: "" } };
-var urlDatabase = {
+const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
@@ -85,24 +86,36 @@ app.post('/urls/:id/delete', (req, res) => {
 });
 
 //Register Routes
-app.get("/register", (req, res) => {
-  res.render('register', {username: req.cookies["username"]});
+app.get('/register', (req, res) => {
+  const templateVars = {
+    user: req.session.user_id,
+  };
+  res.render('_register', templateVars);
 });
 
-app.post("/register", (req, res) => {
-  if (!email || !password) {
-    res.status(400);
-    res.send('user not found');
-  } else if (email === users.email) {
-    res.status(400);
-    res.send('user already exists');
-  } else {
-    let id = generateRandomString(6);
-    let newUser = { id, email, password };
-    users[id] = newUser;
-    res.cookie('id', id);
-    res.redirect('/urls');
+app.post('/register', (req, res) => {
+  if (!req.body.email || !req.body.password) {
+    res.statusCode = 400;
+    res.send('No email or password entered');
+    return;
   }
+  for (const account in users) {
+    if (users[account].email === req.body.email) {
+      res.statusCode = 400;
+      res.send('Account already exists');
+      return;
+    }
+  }
+  const userID = generateRandomString(8);
+  const password = req.body.password;
+
+  users[userID] = {
+    id: userID,
+    email: req.body.email,
+    hashedPassword: bcrypt.hashSync(password, 10),
+  };
+  req.session.user_id = users[userID];
+  res.redirect('/urls');
 });
 
 
@@ -160,10 +173,6 @@ app.post('/logout', (req, res) => {
   res.clearCookie('user_id');
   res.redirect('/urls');
 });
-
-
-
-
 
 
 
