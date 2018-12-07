@@ -5,6 +5,9 @@ var PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
+var cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 app.set("view engine", "ejs");
 
 app.listen(PORT, () => {
@@ -82,11 +85,18 @@ app.post('/urls/:id/delete', (req, res) => {
 });
 
 //Register Routes
-app.get("/register", (req, res) => {
-  const templateVars = {
-    user: req.sessions.user_id,
-  }
-  res.render('register', templateVars);
+app.get("/urls/register", (req, res) => {
+  res.render('urls_register', {username: req.cookies["username"]});
+});
+
+app.post("urls/register", (req, res) => {
+  const id = req.body.id;
+  const email = req.body.email;
+  const password = req.body.password;
+  users.push({email: email, password: password});
+  let randUserID = generateRandomString(6);
+  res.cookie("users", users);
+  res.redirect("/urls");
 });
 
 
