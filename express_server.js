@@ -81,3 +81,38 @@ app.post('/urls/:id/delete', (req, res) => {
   res.redirect('/urls');
 });
 
+//Register Routes
+app.get("/register", (req, res) => {
+  const templateVars = {
+    user: req.sessions.user_id,
+  }
+  res.render('register', templateVars);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
