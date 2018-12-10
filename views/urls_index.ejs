@@ -1,32 +1,21 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <title>TinyApp</title>
 </head>
 <body>
-
-  <% include partials/_header %>
-  <h2> URL List </h2>
-
-
-    <ul>
-       <% for (let url in urls) { %>
-      <li><p><a href="<%=`/u/${url}`%>"><%= `${url}`%></a> <%= urls[url] %>
-        <form method="POST" action="/urls/<%=`${url}`%>/delete"><button>Delete</button>
-        </form>
-        <a href="/urls/<%=[url]%>"><button>Edit</button></a></p></li>
-      </li>
-    <% }; %>
-  <ul>
-
-
-
-  <a href = '#' > Empty for now </a>
-
+    <%- include('partials/_header') %>
+    <% if (user) {%>
+      <h2>URLs:</h2>
+      <ul>
+      <% for(let url in urls){ %>
+        <li><p><a href="<%=`/u/${url}`%>"><%= `${url}`%></a> -------- <%= urls[url] %><form method="POST" action="/urls/<%=`${url}`%>/delete"><button>Delete</button></form><a href="/urls/<%=[url]%>"><button>Update</button></a></p></li>
+      <% } %>
+      </ul>
+      </br>
+      <h3><a href='/urls/new'>Add new URL</a></h3>
+    <% } else { %>
+      <h4><a href='/login'>Log in</a> to view URLs</h4>
+    <% } %>
 </body>
 </html>
-
-
-
-
